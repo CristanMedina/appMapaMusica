@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid class="full-height-grid">
+    <ion-row class="ion-justify-content-center ion-align-items-center">
+      <ion-col size="12" size-md="8" size-lg="6">
+        
+        <div class="register-container ion-text-center">
+          
+          <ion-icon name="musical-notes" class="app-icon"></ion-icon>
+          
+          <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            
+            <ion-list lines="none" class="input-list">
+              
+              <ion-item class="custom-input-item">
+                <ion-label position="floating" color="light">Nombre de Usuario</ion-label>
+                <ion-input type="text" formControlName="username"></ion-input>
+              </ion-item>
+              
+              <ion-item class="custom-input-item">
+                <ion-label position="floating" color="light">Correo Electrónico</ion-label>
+                <ion-input type="email" formControlName="email"></ion-input>
+              </ion-item>
+              
+              <ion-item class="custom-input-item">
+                <ion-label position="floating" color="light">Contraseña</ion-label>
+                <ion-input type="password" formControlName="password"></ion-input>
+              </ion-item>
+
+              <ion-item class="custom-input-item">
+                <ion-label position="floating" color="light">Confirmar Contraseña</ion-label>
+                <ion-input type="password" formControlName="confirmPassword"></ion-input>
+              </ion-item>
+              
+            </ion-list>
+            
+            <ion-button type="submit" expand="block" shape="round" class="register-button" [disabled]="registerForm.invalid">
+              Crear Cuenta
+            </ion-button>
+            
+          </form>
+          
+          <p class="login-text ion-margin-top">
+            ¿Ya tienes una cuenta? <a routerLink="/login" class="text-secondary">Inicia Sesión</a>
+          </p>
+          
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
