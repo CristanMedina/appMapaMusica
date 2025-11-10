@@ -1,0 +1,90 @@
+#mapId {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.map-controls {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  border-radius: 10px;
+  width: 250px;
+}
+
+.map-controls input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 8px;
+  background-color: #222;
+  color: white;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.marker-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 15px;
+  width: 250px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.menu-box {
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  text-align: center;
+  width: 80%;
+  max-width: 300px;
+}
+
+.menu-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.marker-menu {
+  position: absolute;
+  background: #1c1c1c;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 1001;
+}
+
