@@ -30,6 +30,15 @@ export class MapPage implements AfterViewInit {
   private markers: L.Marker[] = [];
   private selectedMarker: L.Marker | null = null;
 
+  // Estado del menú de confirmación
+  showAddMenu = false;
+  clickedLatLng: L.LatLng | null = null;
+
+  // Estado del menú de marcador
+  showMarkerMenu = false;
+  markerMenuPosition = { x: 0, y: 0 };
+  activeMarker: L.Marker | null = null;
+
   ngAfterViewInit() {
     this.initMap();
     this.setupButtons();
@@ -45,17 +54,52 @@ export class MapPage implements AfterViewInit {
 
     setTimeout(() => this.map.invalidateSize(), 500);
 
+    // Evento click en el mapa: mostrar menú de confirmación
     this.map.on('click', (e: L.LeafletMouseEvent) => {
-      const marker = L.marker(e.latlng, { draggable: true }).addTo(this.map);
-      marker.bindPopup('Marcador agregado.').openPopup();
-
-      marker.on('click', () => {
-        this.selectedMarker = marker;
-        marker.bindPopup('Marcador seleccionado para ruta.').openPopup();
-      });
-
-      this.markers.push(marker);
+      this.clickedLatLng = e.latlng;
+      this.showAddMenu = true;
+      this.showMarkerMenu = false;
     });
+  }
+
+  // Agregar marcador tras confirmar
+  confirmAddMarker(): void {
+    if (!this.clickedLatLng) return;
+
+    const marker = L.marker(this.clickedLatLng, { draggable: true }).addTo(this.map);
+    marker.bindPopup('Marcador agregado.').openPopup();
+
+    // Evento click en marcador → abrir menú contextual
+    marker.on('click', (event: any) => {
+      this.activeMarker = marker;
+      this.showMarkerMenu = true;
+      this.showAddMenu = false;
+      // Convertir posición de mapa a coordenadas de pantalla
+      const point = this.map.latLngToContainerPoint(event.latlng);
+      this.markerMenuPosition = { x: point.x, y: point.y };
+    });
+
+    this.markers.push(marker);
+    this.showAddMenu = false;
+    this.clickedLatLng = null;
+  }
+
+  cancelAddMarker(): void {
+    this.showAddMenu = false;
+    this.clickedLatLng = null;
+  }
+
+  deleteActiveMarker(): void {
+    if (this.activeMarker) {
+      this.map.removeLayer(this.activeMarker);
+      this.markers = this.markers.filter((m) => m !== this.activeMarker);
+    }
+    this.closeMarkerMenu();
+  }
+
+  closeMarkerMenu(): void {
+    this.showMarkerMenu = false;
+    this.activeMarker = null;
   }
 
   private setupButtons(): void {

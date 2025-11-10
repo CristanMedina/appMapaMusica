@@ -1,4 +1,3 @@
-
 <ion-content>
   <div id="mapId"></div>
 
@@ -17,5 +16,26 @@
     <ion-button id="btnClearMarkers" expand="block" color="danger" fill="outline">
       ELIMINAR MARCADORES
     </ion-button>
+  </div>
+
+  <!-- Menú para confirmar agregar marcador -->
+  <div class="overlay" *ngIf="showAddMenu">
+    <div class="menu-box">
+      <h3>¿Deseas agregar un marcador aquí?</h3>
+      <div class="menu-buttons">
+        <ion-button color="success" (click)="confirmAddMarker()">Agregar</ion-button>
+        <ion-button color="medium" fill="outline" (click)="cancelAddMarker()">Cancelar</ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú contextual de marcador -->
+  <div
+    class="marker-menu"
+    *ngIf="showMarkerMenu"
+    [ngStyle]="{ top: markerMenuPosition.y + 'px', left: markerMenuPosition.x + 'px' }"
+  >
+    <ion-button color="danger" (click)="deleteActiveMarker()">Borrar marcador</ion-button>
+    <ion-button color="medium" fill="outline" (click)="closeMarkerMenu()">Cancelar</ion-button>
   </div>
 </ion-content>
