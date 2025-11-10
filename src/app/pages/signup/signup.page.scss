@@ -1,0 +1,63 @@
+/* :host aplica estilos al componente actual */
+:host {
+  ion-content {
+    --background: var(--ion-color-dark, #121212);
+  }
+
+  .full-height-grid {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .app-logo {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+  }
+  .app-icon {
+    font-size: 100px; 
+    color: var(--ion-color-secondary, #ff00dd); 
+    margin-bottom: 30px;
+  }
+
+  .input-list {
+    background: transparent;
+    margin-bottom: 20px;
+  }
+
+  .custom-input-item {
+    --background: #1e1e1e;
+    --border-radius: 10px;
+    --border-color: #333;
+    --highlight-color-focused: var(--ion-color-primary, #ff00ff);
+    margin-bottom: 15px;
+  }
+ion-label {
+      color: #9e9e9e; 
+    }
+
+    ion-input {
+      --color: #ff07f3; 
+    }
+  .register-button {
+    --background: linear-gradient(to right, var(--ion-color-primary, #ff00ff), var(--ion-color-secondary, #00ffff));
+    --box-shadow: 0 4px 15px rgba(255, 0, 255, 0.4);
+    font-weight: bold;
+    height: 50px;
+    font-size: 1.1em;
+    margin-top: 10px;
+  }
+
+  .login-text {
+    color: #ccc;
+  }
+
+  .text-secondary {
+    color: var(--ion-color-secondary, #00ffff);
+    font-weight: bold;
+    text-decoration: none;
+  }
+}
