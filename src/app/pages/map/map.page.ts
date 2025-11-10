@@ -54,11 +54,17 @@ export class MapPage implements AfterViewInit {
 
     setTimeout(() => this.map.invalidateSize(), 500);
 
-    // Evento click en el mapa: mostrar menú de confirmación
+    // Evento click en el mapa: mostrar menú solo si no fue sobre un marcador
     this.map.on('click', (e: L.LeafletMouseEvent) => {
-      this.clickedLatLng = e.latlng;
-      this.showAddMenu = true;
-      this.showMarkerMenu = false;
+      const clickedEl = e.originalEvent.target as HTMLElement;
+      const clickedOnMarker = clickedEl.classList.contains('leaflet-marker-icon');
+
+      if (!clickedOnMarker) {
+        this.clickedLatLng = e.latlng;
+        this.showAddMenu = true;
+        this.showMarkerMenu = false;
+        this.selectedMarker = null;
+      }
     });
   }
 
@@ -69,12 +75,13 @@ export class MapPage implements AfterViewInit {
     const marker = L.marker(this.clickedLatLng, { draggable: true }).addTo(this.map);
     marker.bindPopup('Marcador agregado.').openPopup();
 
-    // Evento click en marcador → abrir menú contextual
+    // Evento click en marcador → abrir menú contextual y seleccionarlo
     marker.on('click', (event: any) => {
       this.activeMarker = marker;
+      this.selectedMarker = marker; // ← aquí se guarda el marcador seleccionado
       this.showMarkerMenu = true;
       this.showAddMenu = false;
-      // Convertir posición de mapa a coordenadas de pantalla
+
       const point = this.map.latLngToContainerPoint(event.latlng);
       this.markerMenuPosition = { x: point.x, y: point.y };
     });
@@ -93,6 +100,11 @@ export class MapPage implements AfterViewInit {
     if (this.activeMarker) {
       this.map.removeLayer(this.activeMarker);
       this.markers = this.markers.filter((m) => m !== this.activeMarker);
+
+      // Si eliminamos el marcador seleccionado, limpiamos la selección
+      if (this.selectedMarker === this.activeMarker) {
+        this.selectedMarker = null;
+      }
     }
     this.closeMarkerMenu();
   }
