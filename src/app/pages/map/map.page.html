@@ -1,2 +1,21 @@
-<ion-content [fullscreen]="true" id="mapId" style="height: 100%; width: 100%;">
+
+<ion-content>
+  <div id="mapId"></div>
+
+  <div class="map-controls">
+    <input type="text" id="searchInput" placeholder="Buscar dirección..." />
+    <div class="buttons">
+      <ion-button id="btnLocation" color="primary">MI UBICACIÓN</ion-button>
+      <ion-button id="btnClear" color="medium" fill="outline">LIMPIAR RUTAS</ion-button>
+    </div>
+  </div>
+
+  <div class="marker-controls">
+    <ion-button id="btnRouteToMarker" expand="block" color="success" fill="solid">
+      RUTA AL MARCADOR
+    </ion-button>
+    <ion-button id="btnClearMarkers" expand="block" color="danger" fill="outline">
+      ELIMINAR MARCADORES
+    </ion-button>
+  </div>
 </ion-content>

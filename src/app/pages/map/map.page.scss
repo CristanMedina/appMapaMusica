@@ -1,0 +1,91 @@
+#mapId {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.map-controls {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  border-radius: 10px;
+  width: 250px;
+}
+
+.map-controls input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 8px;
+  background-color: #222;
+  color: white;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.marker-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 15px;
+  width: 250px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Corrige la visibilidad del texto del panel de rutas */
+.leaflet-routing-container {
+  background: #fff !important;
+  color: #000 !important;
+  font-size: 14px !important;
+  font-family: 'Roboto', sans-serif !important;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Mejora la visibilidad de los pasos */
+.leaflet-routing-instruction {
+  background: #f9f9f9 !important;
+  color: #111 !important;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  padding: 4px 8px;
+}
+
+.leaflet-routing-alt h2 {
+  color: #222 !important;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.leaflet-routing-alt h3 {
+  color: #333 !important;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+/* Evita que se estire demasiado en móviles */
+.leaflet-routing-container .leaflet-routing-collapse-btn {
+  background: #0078ff;
+  color: white !important;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 22px;
+}
