@@ -1,13 +1,99 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="dark">
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/settings"> <ion-icon name="settings-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" color="dark">
+  <div class="profile-header ion-text-center">
+    <ion-avatar class="profile-avatar">
+      <img src="assets/icon/Vectoor.png" alt="Perfil de PepeMusic">
+    </ion-avatar>
+    <ion-text class="username-text">
+      <h2>@PepeMusic</h2>
+    </ion-text>
+
+    <ion-grid class="stats-grid">
+      <ion-row>
+        <ion-col size="6">
+          <ion-text color="light">
+            <h3>{{ eventsAttended }}</h3>
+            <p>Eventos Asistidos</p>
+          </ion-text>
+        </ion-col>
+        <ion-col size="6">
+          <ion-text color="light">
+            <h3>{{ artistsFollowed }}</h3>
+            <p>Artistas Seguidos</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-segment [(ngModel)]="activeTab" (ionChange)="segmentChanged($event)" mode="md" class="profile-segment">
+    <ion-segment-button value="saved">
+      <ion-label>Guardados</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="favorites">
+      <ion-label>Favoritos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="calendar">
+      <ion-label>Mi Calendario</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="activeTab" class="tab-content">
+    <div *ngSwitchCase="'saved'" class="ion-padding-horizontal">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let event of savedEvents">
+            <ion-card class="event-card">
+              <img [src]="event.image" alt="Event Image">
+              <ion-card-content>
+                <ion-card-title>{{ event.title }}</ion-card-title>
+                <ion-card-subtitle>{{ event.subtitle }}</ion-card-subtitle>
+                <div class="tags">
+                  <span *ngFor="let tag of event.tags" class="event-tag">{{ tag }}</span>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngSwitchCase="'favorites'" class="ion-padding ion-text-center">
+      <p>Aquí verás tus artistas y eventos favoritos.</p>
+    </div>
+
+    <div *ngSwitchCase="'calendar'" class="ion-padding ion-text-center">
+      <p>Aquí estará tu calendario de eventos.</p>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar color="dark">
+    <ion-tab-bar slot="bottom" class="custom-tab-bar">
+      <ion-tab-button routerLink="/map" routerDirection="root">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button routerLink="/events" routerDirection="root">
+        <ion-icon name="flash-outline"></ion-icon>
+        <ion-label>Eventos</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button routerLink="/profile" routerDirection="root" selected="true">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-toolbar>
+</ion-footer>
