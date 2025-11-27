@@ -2,38 +2,56 @@
   <ion-toolbar color="dark">
     <ion-title>Perfil</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/settings"> <ion-icon name="settings-outline" color="light"></ion-icon>
+      <!-- Cambiado routerLink por evento click para Logout -->
+      <ion-button (click)="presentSettings()">
+        <ion-icon name="settings-outline" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="dark">
-  <div class="profile-header ion-text-center">
-    <ion-avatar class="profile-avatar">
-      <img src="assets/icon/Vectoor.png" alt="Perfil de PepeMusic">
-    </ion-avatar>
-    <ion-text class="username-text">
-      <h2>@PepeMusic</h2>
-    </ion-text>
 
-    <ion-grid class="stats-grid">
-      <ion-row>
-        <ion-col size="6">
-          <ion-text color="light">
-            <h3>{{ eventsAttended }}</h3>
-            <p>Eventos Asistidos</p>
-          </ion-text>
-        </ion-col>
-        <ion-col size="6">
-          <ion-text color="light">
-            <h3>{{ artistsFollowed }}</h3>
-            <p>Artistas Seguidos</p>
-          </ion-text>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+  <!-- Usamos @if para asegurar que hay datos -->
+  @if (user(); as currentUser) {
+    <div class="profile-header ion-text-center">
+
+      <ion-avatar class="profile-avatar">
+        <!-- Puedes cambiar esto luego por user.avatar si lo agregas a la DB -->
+        <img src="assets/icon/Vectoor.png" alt="Perfil">
+      </ion-avatar>
+
+      <ion-text class="username-text">
+        <h2>@{{ currentUser.name }}</h2>
+        <p class="user-email">{{ currentUser.email }}</p>
+
+        <!-- Etiqueta especial si es admin/organizador -->
+        @if (currentUser.isAdmin) {
+          <ion-chip color="secondary" outline="true">
+            <ion-icon name="flash-outline"></ion-icon>
+            <ion-label>Organizador</ion-label>
+          </ion-chip>
+        }
+      </ion-text>
+
+      <ion-grid class="stats-grid">
+        <ion-row>
+          <ion-col size="6">
+            <ion-text color="light">
+              <h3>{{ eventsAttended }}</h3>
+              <p>Eventos Asistidos</p>
+            </ion-text>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text color="light">
+              <h3>{{ artistsFollowed }}</h3>
+              <p>Artistas Seguidos</p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  }
 
   <ion-segment [(ngModel)]="activeTab" (ionChange)="segmentChanged($event)" mode="md" class="profile-segment">
     <ion-segment-button value="saved">
@@ -53,7 +71,8 @@
         <ion-row>
           <ion-col size="6" *ngFor="let event of savedEvents">
             <ion-card class="event-card">
-              <img [src]="event.image" alt="Event Image">
+              <!-- Placeholder si la imagen falla -->
+              <img [src]="event.image"  alt="Event">
               <ion-card-content>
                 <ion-card-title>{{ event.title }}</ion-card-title>
                 <ion-card-subtitle>{{ event.subtitle }}</ion-card-subtitle>
@@ -68,13 +87,11 @@
     </div>
 
     <div *ngSwitchCase="'favorites'" class="ion-padding ion-text-center">
-      <p>Aquí verás tus artistas y eventos favoritos.</p>
+      <p style="color: #666">Aquí verás tus artistas favoritos.</p>
     </div>
 
     <div *ngSwitchCase="'calendar'" class="ion-padding ion-text-center">
-      <p>Aquí estará tu calendario de eventos.</p>
+      <p style="color: #666">Próximamente tu agenda.</p>
     </div>
   </div>
 </ion-content>
-
-

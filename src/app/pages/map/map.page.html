@@ -1,41 +1,86 @@
 <ion-content>
   <div id="mapId"></div>
 
-  <div class="map-controls">
-    <input type="text" id="searchInput" placeholder="Buscar dirección..." />
-    <div class="buttons">
-      <ion-button id="btnLocation" color="primary">MI UBICACIÓN</ion-button>
-      <ion-button id="btnClear" color="medium" fill="outline">LIMPIAR RUTAS</ion-button>
-    </div>
-  </div>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="light" (click)="locateUser()">
+      <ion-icon name="navigate" color="primary"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-  <div class="marker-controls">
-    <ion-button id="btnRouteToMarker" expand="block" color="success" fill="solid">
-      RUTA AL MARCADOR
-    </ion-button>
-    <ion-button id="btnClearMarkers" expand="block" color="danger" fill="outline">
-      ELIMINAR MARCADORES
-    </ion-button>
-  </div>
+  <ion-fab slot="fixed" vertical="top" horizontal="end" style="margin-top: 50px;">
+     <ion-fab-button color="light" (click)="clearRoutes()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+     </ion-fab-button>
+  </ion-fab>
 
-  <!-- Menú para confirmar agregar marcador -->
-  <div class="overlay" *ngIf="showAddMenu">
-    <div class="menu-box">
-      <h3>¿Deseas agregar un marcador aquí?</h3>
-      <div class="menu-buttons">
-        <ion-button color="success" (click)="confirmAddMarker()">Agregar</ion-button>
-        <ion-button color="medium" fill="outline" (click)="cancelAddMarker()">Cancelar</ion-button>
-      </div>
-    </div>
-  </div>
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="cancelAdd()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title>Nuevo Evento TJ</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancelAdd()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
 
-  <!-- Menú contextual de marcador -->
-  <div
-    class="marker-menu"
-    *ngIf="showMarkerMenu"
-    [ngStyle]="{ top: markerMenuPosition.y + 'px', left: markerMenuPosition.x + 'px' }"
-  >
-    <ion-button color="danger" (click)="deleteActiveMarker()">Borrar marcador</ion-button>
-    <ion-button color="medium" fill="outline" (click)="closeMarkerMenu()">Cancelar</ion-button>
-  </div>
+      <ion-content class="ion-padding" color="dark">
+
+        <form (ngSubmit)="saveEvent()">
+
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Título del Evento</ion-label>
+            <ion-input [(ngModel)]="newEvent.title" name="title" placeholder="Ej. Toquín en la Sexta" required></ion-input>
+          </ion-item>
+
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Tipo de Lugar</ion-label>
+            <ion-select [(ngModel)]="newEvent.locationType" name="locationType" placeholder="Selecciona">
+              <ion-select-option value="Bar">Bar</ion-select-option>
+              <ion-select-option value="Auditorio">Auditorio / Foro</ion-select-option>
+              <ion-select-option value="Festival">Festival al aire libre</ion-select-option>
+              <ion-select-option value="House Party">House Party / Garage</ion-select-option>
+              <ion-select-option value="Callejero">Evento Callejero</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Dirección</ion-label>
+            <ion-input [(ngModel)]="newEvent.address" name="address" placeholder="Calle..."></ion-input>
+          </ion-item>
+
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-textarea [(ngModel)]="newEvent.description" name="description" rows="3" placeholder="¿Qué bandas tocan? ¿Costo?"></ion-textarea>
+          </ion-item>
+
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Etiquetas (Género, Vibe)</ion-label>
+            <ion-input [(ngModel)]="newEvent.tags" name="tags" placeholder="Ej. Rock, Ska, Norteño, Chill"></ion-input>
+          </ion-item>
+
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Info Extra (Precios, Edad)</ion-label>
+            <ion-input [(ngModel)]="newEvent.extraInfo" name="extraInfo" placeholder="Ej. +18, Cover $50"></ion-input>
+          </ion-item>
+
+          <ion-item lines="none" class="custom-checkbox">
+            <ion-checkbox slot="start" [(ngModel)]="newEvent.hasAccessibility" name="hasAccessibility"></ion-checkbox>
+            <ion-label>¿Cuenta con acceso para discapacitados?</ion-label>
+          </ion-item>
+
+          <div class="ion-padding-top">
+            <ion-button expand="block" type="submit" color="secondary" shape="round" [disabled]="!newEvent.title">
+              <ion-icon slot="start" name="add"></ion-icon>
+              Publicar Evento
+            </ion-button>
+          </div>
+
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
