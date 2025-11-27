@@ -1,13 +1,77 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>events</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="dark">
+    <ion-title class="neon-text">Eventos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="options-outline" color="secondary"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+  <ion-toolbar color="dark">
+    <ion-searchbar placeholder="Buscar eventos, artistas..." class="custom-searchbar"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">events</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" color="dark">
+  
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">Cerca de ti <ion-icon name="location-outline" color="primary"></ion-icon></h3>
+      <span class="see-all">Ver mapa</span>
+    </div>
+
+    <div class="horizontal-scroll">
+      <div class="card-mini" *ngFor="let event of nearbyEvents">
+        <div class="card-mini-img" [style.background-image]="'url(' + event.image + ')'">
+          <div class="distance-badge">{{ event.distance }}</div>
+        </div>
+        <div class="card-mini-content">
+          <h4>{{ event.title }}</h4>
+          <p>{{ event.date }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">Recomendado para ti</h3>
+    </div>
+
+    <ion-list lines="none" class="events-list">
+      <ion-item class="event-item" *ngFor="let event of recommendedEvents">
+        <div class="event-card-horizontal">
+          
+          <div class="event-img-wrapper">
+            <img [src]="event.image" alt="Event Image">
+          </div>
+
+          <div class="event-info">
+            <div class="tags">
+              <span class="tag" *ngFor="let tag of event.tags">{{ tag }}</span>
+            </div>
+            <h2>{{ event.title }}</h2>
+            <p class="location">
+              <ion-icon name="location-outline"></ion-icon> {{ event.location }}
+            </p>
+            <p class="date">
+              <ion-icon name="calendar-outline"></ion-icon> {{ event.date }}
+            </p>
+            <div class="price-row">
+              <span class="price">{{ event.price }}</span>
+              <ion-button fill="clear" size="small" (click)="toggleFavorite(event)">
+                <ion-icon [name]="event.isFavorite ? 'heart' : 'heart-outline'" [color]="event.isFavorite ? 'primary' : 'medium'"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+  
+  <div class="spacer-bottom"></div>
+
 </ion-content>
+

@@ -1,14 +1,12 @@
 :host {
-  /* Fondo general oscuro */
   ion-content {
     --background: var(--ion-color-dark);
   }
 
-  /* Toolbar superior */
   ion-toolbar {
     --background: var(--ion-color-dark);
     --border-width: 0;
-    --color: #ffffff; /* Color del título */
+    --color: #ffffff;
   }
 
   ion-title {
@@ -18,10 +16,9 @@
 
   ion-buttons ion-button ion-icon {
     font-size: 24px;
-    color: #ffffff; /* Color del icono de settings */
+    color: #ffffff;
   }
 
-  /* Sección del encabezado del perfil */
   .profile-header {
     padding: 20px 0;
     background: var(--ion-color-dark);
@@ -31,11 +28,11 @@
     width: 90px;
     height: 90px;
     margin: 0 auto 10px auto;
-    border: 3px solid var(--ion-color-secondary); /* Borde neón */
+    border: 3px solid var(--ion-color-secondary);
     padding: 2px;
-    box-shadow: 0 0 15px var(--ion-color-secondary-rgb, 0,255,255, 0.5); /* Sombra neón */
+    box-shadow: 0 0 15px var(--ion-color-secondary-rgb, 0,255,255, 0.5);
     img {
-      border-radius: 50%; /* Asegura que la imagen sea redonda */
+      border-radius: 50%;
     }
   }
 
@@ -46,7 +43,6 @@
     margin-bottom: 20px;
   }
 
-  /* Estadísticas */
   .stats-grid {
     max-width: 300px;
     margin: 0 auto 30px auto;
@@ -62,12 +58,12 @@
         top: 15%;
         height: 70%;
         width: 1px;
-        background: #333; /* Separador sutil */
+        background: #333;
       }
     }
     
     h3 {
-      color: var(--ion-color-secondary); /* Color neón para los números */
+      color: var(--ion-color-secondary);
       font-size: 1.5em;
       font-weight: bold;
       margin-bottom: 5px;

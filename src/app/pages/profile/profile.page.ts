@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import { settingsOutline, mapOutline, flashOutline, personOutline } from 'ionicons/icons';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
