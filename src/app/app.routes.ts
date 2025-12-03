@@ -37,5 +37,10 @@ export const routes: Routes = [
     path: '',
     redirectTo: '/map',
     pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    redirectTo: '/map',
+    pathMatch: 'full'
   }
 ];
