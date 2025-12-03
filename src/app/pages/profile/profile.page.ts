@@ -7,6 +7,7 @@ import { addIcons } from 'ionicons';
 import { settingsOutline, mapOutline, flashOutline, personOutline, logOutOutline, personCircleOutline } from 'ionicons/icons';
 import { Database } from '../../services/database';
 
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
