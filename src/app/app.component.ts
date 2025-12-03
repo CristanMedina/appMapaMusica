@@ -8,5 +8,7 @@ import { BottomTabBarComponent } from "./components/bottom-tab-bar/bottom-tab-ba
   imports: [IonApp, IonRouterOutlet, BottomTabBarComponent],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+  }
+
 }
