@@ -1,5 +1,4 @@
 :root {
-  /** Colores Neón Personalizados **/
   --ion-color-primary: #ff00ff;
   --ion-color-primary-rgb: 255, 0, 255;
   --ion-color-primary-contrast: #ffffff;
@@ -14,7 +13,6 @@
   --ion-color-secondary-shade: #00e0e0;
   --ion-color-secondary-tint: #1affff;
 
-  /** Color Oscuro Personalizado (para fondos) **/
   --ion-color-dark: #121212;
   --ion-color-dark-rgb: 18, 18, 18;
   --ion-color-dark-contrast: #ffffff;
@@ -33,4 +31,56 @@
 
   --ion-item-background: #1e1e1e;
   --ion-toolbar-background: #1e1e1e;
+}
+body.normal {
+  --ion-color-primary: #ff00ff;
+  --ion-color-primary-rgb: 255, 0, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #e000e0;
+  --ion-color-primary-tint: #ff1aff;
+
+  --ion-color-secondary: #00ffff;
+  --ion-color-secondary-rgb: 0, 255, 255;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #00e0e0;
+  --ion-color-secondary-tint: #1affff;
+
+  --ion-background-color: #121212;
+  --ion-text-color: #ffffff;
+  --ion-item-background: #1e1e1e;
+  --ion-toolbar-background: #1e1e1e;
+}
+
+
+body.protanopia {
+  --ion-color-primary: #007bff; 
+  --ion-color-primary-rgb: 0, 123, 255;
+  --ion-color-primary-contrast: #ffffff;
+  
+  --ion-color-secondary: #ffd700; 
+  --ion-color-secondary-rgb: 255, 215, 0;
+  --ion-color-secondary-contrast: #000000;
+}
+
+
+body.deuteranopia {
+  --ion-color-primary: #102e87; 
+  --ion-color-primary-rgb: 16, 46, 135;
+  --ion-color-primary-contrast: #ffffff;
+
+  --ion-color-secondary: #ffb703; 
+  --ion-color-secondary-rgb: 255, 183, 3;
+  --ion-color-secondary-contrast: #000000;
+}
+
+body.tritanopia {
+  --ion-color-primary: #d00000; 
+  --ion-color-primary-rgb: 208, 0, 0;
+  --ion-color-primary-contrast: #ffffff;
+
+  --ion-color-secondary: #00acc1; 
+  --ion-color-secondary-rgb: 0, 172, 193;
+  --ion-color-secondary-contrast: #000000;
 }

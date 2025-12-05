@@ -5,7 +5,7 @@ import { BottomTabBarComponent } from "./components/bottom-tab-bar/bottom-tab-ba
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet, BottomTabBarComponent],
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
   constructor() {
