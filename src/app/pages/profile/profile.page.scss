@@ -1,172 +1,198 @@
 :host {
-    ion-content {
-      --background: var(--ion-color-dark);
+  /* Fondo general oscuro */
+  ion-content {
+    --background: var(--ion-color-dark);
+  }
+
+  /* Toolbar superior */
+  ion-toolbar {
+    --background: var(--ion-color-dark);
+    --border-width: 0;
+    --color: #ffffff;
+  }
+
+  ion-title {
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  ion-buttons ion-button ion-icon {
+    font-size: 24px;
+    color: #ffffff;
+  }
+
+  /* --- HEADER DEL PERFIL --- */
+  .profile-header {
+    padding: 20px 0;
+    background: var(--ion-color-dark);
+  }
+
+  /* Avatar con botón de cámara */
+  .avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 15px auto;
+    cursor: pointer;
+  }
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--ion-color-secondary); /* Borde Cian Neón */
+    padding: 3px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    
+    img {
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .edit-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--ion-color-primary); /* Rosa Neón */
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--ion-color-dark);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+
+  .username-text h2 {
+    color: #ffffff;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+
+  /* Estadísticas */
+  .stats-grid {
+    max-width: 350px;
+    margin: 0 auto 20px auto;
+
+    ion-col {
+      text-align: center;
+      position: relative;
+      
+      &:first-child::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: #333;
+      }
+    }
+    
+    h3 {
+      color: var(--ion-color-secondary);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 5px;
     }
 
-    ion-toolbar {
-      --background: var(--ion-color-dark);
-      --border-width: 0;
-      --color: #ffffff;
+    p {
+      color: #999;
+      font-size: 0.85rem;
+      margin-top: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  /* --- PESTAÑAS (SEGMENTOS) --- */
+  .profile-segment {
+    --background: var(--ion-color-dark);
+    background: var(--ion-color-dark);
+    padding: 0 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #2a2a2a;
+
+    ion-segment-button {
+      --color: #666;
+      --color-checked: var(--ion-color-primary);
+      --indicator-color: var(--ion-color-primary);
+      --indicator-height: 3px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  /* --- CONTENIDO --- */
+  .tab-content {
+    background: var(--ion-color-dark);
+    padding-bottom: 60px; /* Espacio para el fab */
+  }
+
+  /* Tarjetas de Eventos (Favoritos) */
+  .event-card {
+    --background: #1e1e1e;
+    border-radius: 12px;
+    margin: 5px 0 15px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
+    ion-card-content {
+      padding: 12px;
     }
 
-    ion-title {
+    ion-card-title {
       color: #ffffff;
+      font-size: 1rem;
       font-weight: bold;
+      margin-bottom: 4px;
     }
 
-    ion-buttons ion-button ion-icon {
-      font-size: 24px;
-      color: #ffffff;
+    ion-card-subtitle {
+      color: #999;
+      font-size: 0.75rem;
+      margin-bottom: 8px;
     }
 
-    .profile-header {
-      padding: 20px 0;
-      background: var(--ion-color-dark);
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
     }
 
-    .profile-avatar {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 10px auto;
-      border: 3px solid var(--ion-color-secondary);
-      padding: 2px;
-      box-shadow: 0 0 15px var(--ion-color-secondary-rgb, 0,255,255, 0.5);
-      img {
-        border-radius: 50%;
-      }
+    .event-tag {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ccc;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
     }
+  }
 
-    .username-text {
-        h2 {
-            color: #ffffff;
-            font-weight: bold;
-            margin-top: 5px;
-            margin-bottom: 5px; /* Reduje margen para que quepa el email */
-        }
-
-        /* Estilo nuevo para el Email */
-        .user-email {
-            color: #999;
-            font-size: 0.9em;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        /* Estilo para el chip de admin */
-        ion-chip {
-            margin-bottom: 15px;
-            height: 24px;
-            font-size: 0.7em;
-        }
-    }
-
-    .stats-grid {
-      max-width: 300px;
-      margin: 0 auto 30px auto;
-
-      ion-col {
-        text-align: center;
-        position: relative;
-
-        &:first-child::after {
-          content: '';
-          position: absolute;
-          right: 0;
-          top: 15%;
-          height: 70%;
-          width: 1px;
-          background: #333;
-        }
-      }
-
-      h3 {
-        color: var(--ion-color-secondary);
-        font-size: 1.5em;
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-
-      p {
-        color: #ccc;
-        font-size: 0.8em;
-        margin-top: 0;
-      }
-    }
-
-    .profile-segment {
-      --background: var(--ion-color-dark);
-      --border-color: transparent;
-      border-bottom: 1px solid #333;
-      padding: 0 10px;
-      margin-bottom: 15px;
-
-      ion-segment-button {
-        --color: #cccccc;
-        --color-checked: var(--ion-color-primary);
-        --indicator-color: var(--ion-color-primary);
-        --indicator-height: 3px;
-        font-weight: bold;
-        text-transform: capitalize;
-        min-height: 40px;
-      }
-    }
-
-    .tab-content {
-      background: var(--ion-color-dark);
-    }
-
-    .event-card {
+  /* --- CALENDARIO --- */
+  .calendar-wrapper {
+    margin-bottom: 20px;
+    
+    ion-datetime {
+      /* Estilos para el calendario de Ionic */
       --background: #1e1e1e;
-      border-radius: 10px;
-      margin: 10px 0;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-
-      img {
-        border-radius: 10px 10px 0 0;
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-      }
-
-      ion-card-content {
-        padding: 10px;
-      }
-
-      ion-card-title {
-        color: #ffffff;
-        font-size: 0.9em;
-        font-weight: bold;
-        margin-bottom: 3px;
-      }
-
-      ion-card-subtitle {
-        color: #cccccc;
-        font-size: 0.7em;
-        margin-bottom: 8px;
-      }
-
-      .tags {
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 5px;
-      }
-
-      .event-tag {
-        background: rgba(var(--ion-color-primary-rgb), 0.2);
-        color: var(--ion-color-primary);
-        font-size: 0.6em;
-        padding: 3px 8px;
-        border-radius: 5px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-        white-space: nowrap;
-      }
+      --background-rgb: 30, 30, 30;
+      --title-color: white;
+      
+      /* Colores de días */
+      --wheel-highlight-background: #333;
+      --day-active-background: var(--ion-color-primary);
+      --day-active-color: white;
+      
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      margin: 0 auto;
     }
-
-    /* Footer no se toca porque está en el main layout component usualmente,
-       pero si lo usas aquí, mantenemos tus estilos */
-    ion-footer ion-toolbar {
-        --background: #1e1e1e;
-        border-top: 1px solid #333;
-    }
+  }
 }

@@ -10,4 +10,8 @@ export interface MusicEvent {
   extraInfo: string;
   hasAccessibility: boolean;
   createdBy: string;
+  image?: string;
+  date?: string; 
+  isFavorite?: boolean;
+
 }

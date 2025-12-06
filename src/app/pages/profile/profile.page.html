@@ -22,21 +22,21 @@
     </div>
 
     <ion-text class="username-text">
-      <h2>{{ user()?.email || '@PepeMusic' }}</h2>
+      <h2>@{{ user()?.email?.split('@')?.[0] || 'Usuario' }}</h2>
     </ion-text>
 
     <ion-grid class="stats-grid">
       <ion-row>
         <ion-col size="6">
           <ion-text color="light">
-            <h3>{{ eventsAttended }}</h3>
-            <p>Eventos Asistidos</p>
+            <h3>{{ favoriteEvents.length }}</h3>
+            <p>Favoritos</p>
           </ion-text>
         </ion-col>
         <ion-col size="6">
           <ion-text color="light">
             <h3>{{ artistsFollowed }}</h3>
-            <p>Artistas Seguidos</p>
+            <p>Seguidos</p>
           </ion-text>
         </ion-col>
       </ion-row>
@@ -44,9 +44,6 @@
   </div>
 
   <ion-segment [(ngModel)]="activeTab" (ionChange)="segmentChanged($event)" mode="md" class="profile-segment">
-    <ion-segment-button value="saved">
-      <ion-label>Guardados</ion-label>
-    </ion-segment-button>
     <ion-segment-button value="favorites">
       <ion-label>Favoritos</ion-label>
     </ion-segment-button>
@@ -57,17 +54,25 @@
 
   <div [ngSwitch]="activeTab" class="tab-content">
     
-    <div *ngSwitchCase="'saved'" class="ion-padding-horizontal">
+    <div *ngSwitchCase="'favorites'" class="ion-padding-horizontal">
+      <div *ngIf="favoriteEvents.length === 0" class="ion-padding ion-text-center">
+        <ion-icon name="heart-outline" style="font-size: 40px; color: #666; margin-top: 20px;"></ion-icon>
+        <p style="color: #999;">Dale ❤ a los eventos para verlos aquí.</p>
+      </div>
+
       <ion-grid>
         <ion-row>
-          <ion-col size="12" size-md="6" *ngFor="let event of savedEvents">
+          <ion-col size="12" size-md="6" *ngFor="let event of favoriteEvents">
             <ion-card class="event-card">
-              <img [src]="event.image" alt="Event Image" />
+              <img [src]="event.image || 'assets/event-placeholder.jpg'" alt="Event Image" style="height: 120px; object-fit: cover;" />
               <ion-card-content>
                 <ion-card-title>{{ event.title }}</ion-card-title>
-                <ion-card-subtitle>{{ event.subtitle }}</ion-card-subtitle>
+                <ion-card-subtitle>{{ event.locationType }}</ion-card-subtitle>
                 <div class="tags">
-                  <span *ngFor="let tag of event.tags" class="event-tag">{{ tag }}</span>
+                   <span class="event-tag" *ngIf="event.date" style="background: var(--ion-color-secondary); color: black;">
+                     {{ event.date }}
+                   </span>
+                   <span class="event-tag">{{ event.tags }}</span>
                 </div>
               </ion-card-content>
             </ion-card>
@@ -76,36 +81,92 @@
       </ion-grid>
     </div>
 
-    <div *ngSwitchCase="'favorites'" class="ion-padding ion-text-center">
-      <ion-icon name="heart-outline" style="font-size: 40px; color: #666;"></ion-icon>
-      <p style="color: #999;">Aún no tienes favoritos.</p>
-    </div>
+    <div *ngSwitchCase="'calendar'" class="ion-padding">
+      
+      <div *ngIf="selectedEventPreview" class="event-preview-popover" 
+           style="background: #1e1e1e; border: 2px solid var(--ion-color-primary); border-radius: 12px; padding: 10px; margin-bottom: 20px; position: relative; animation: fadeIn 0.3s;">
+        
+        <ion-icon name="close-circle-outline" (click)="closePreview()" 
+                  style="position: absolute; top: -10px; right: -10px; font-size: 28px; color: var(--ion-color-primary); background: #121212; border-radius: 50%; cursor: pointer;"></ion-icon>
+        
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <img [src]="selectedEventPreview.image || 'assets/event-placeholder.jpg'" 
+               style="width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 1px solid #333;">
+          <div>
+            <h4 style="margin: 0; color: white; font-weight: bold;">{{ selectedEventPreview.title }}</h4>
+            <p style="margin: 5px 0 0 0; color: var(--ion-color-secondary); font-size: 0.9em;">
+              {{ selectedEventPreview.date }}
+            </p>
+          </div>
+        </div>
+      </div>
 
-    <div *ngSwitchCase="'calendar'" class="ion-padding ion-text-center">
-      <ion-icon name="calendar-outline" style="font-size: 40px; color: #666;"></ion-icon>
-      <p style="color: #999;">Tu calendario está vacío.</p>
+      <div class="calendar-wrapper">
+         <ion-datetime 
+            presentation="date" 
+            [highlightedDates]="highlightedDates"
+            (ionChange)="onDateSelected($event)"
+            style="margin: 0 auto; border-radius: 10px; --background: #1e1e1e; max-width: 100%; border: 1px solid #333;"
+         ></ion-datetime>
+      </div>
+
+      <h3 style="color:white; margin-top:20px; font-size: 1.1em; padding-left: 5px; border-left: 3px solid var(--ion-color-primary);">Próximos Eventos</h3>
+      
+      <ion-list lines="none" style="background:transparent;">
+        <ion-item *ngFor="let event of calendarEvents" style="--background:transparent; margin-bottom:10px; --padding-start: 0;">
+           <div style="background:#1e1e1e; padding:10px; border-radius:10px; width:100%; display:flex; align-items:center; border: 1px solid #333;">
+              <div style="background:var(--ion-color-primary); color:white; padding:5px 10px; border-radius:5px; text-align:center; margin-right:15px; min-width: 60px;">
+                 <div style="font-weight: bold; font-size: 1.4em;">{{ event.date?.split('-')?.[2] }}</div> 
+                 <div style="font-size:0.6em; text-transform: uppercase;">MES {{ event.date?.split('-')?.[1] }}</div> 
+              </div>
+              <div style="flex: 1;">
+                 <h3 style="color:white; margin:0; font-weight: bold; font-size: 1em;">{{ event.title }}</h3>
+                 <p style="color:var(--ion-color-secondary); margin:3px 0 0 0; font-size:0.8em;">
+                    <ion-icon name="location-outline"></ion-icon> {{ event.locationType }}
+                 </p>
+              </div>
+           </div>
+        </ion-item>
+        
+        <div *ngIf="calendarEvents.length === 0" class="ion-text-center ion-padding">
+            <p style="color:#666;">No hay eventos con fecha programada.</p>
+        </div>
+      </ion-list>
     </div>
   </div>
 
   <ion-fab vertical="bottom" horizontal="start" slot="fixed" style="margin-bottom: 15px; margin-left: 15px;">
     <ion-fab-button color="dark" size="small" style="border: 1px solid var(--ion-color-secondary);">
       <ion-icon name="eye-outline" color="secondary"></ion-icon>
-      
-      <ion-select 
-        interface="action-sheet" 
-        [value]="currentMode" 
-        (ionChange)="changeColorMode($event)" 
-        cancelText="Cancelar"
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;"
-      >
-        <ion-select-option value="normal">Normal </ion-select-option>
-        <ion-select-option value="protanopia">Protanopía </ion-select-option>
-        <ion-select-option value="deuteranopia">Deuteranopía </ion-select-option>
-        <ion-select-option value="tritanopia">Tritanopía </ion-select-option>
+      <ion-select interface="action-sheet" [value]="currentMode" (ionChange)="changeColorMode($event)" cancelText="Cancelar" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;">
+        <ion-select-option value="normal">Normal</ion-select-option>
+        <ion-select-option value="protanopia">Protanopía</ion-select-option>
+        <ion-select-option value="deuteranopia">Deuteranopía</ion-select-option>
+        <ion-select-option value="tritanopia">Tritanopía</ion-select-option>
       </ion-select>
     </ion-fab-button>
   </ion-fab>
 
   <div style="height: 20px;"></div>
-
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar color="dark">
+    <ion-tab-bar slot="bottom" class="custom-tab-bar">
+      <ion-tab-button routerLink="/map" routerDirection="root">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button routerLink="/events" routerDirection="root">
+        <ion-icon name="flash-outline"></ion-icon>
+        <ion-label>Eventos</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button routerLink="/profile" routerDirection="root" selected="true">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-toolbar>
+</ion-footer>

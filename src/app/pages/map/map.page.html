@@ -1,18 +1,22 @@
 <ion-content>
+  <!-- Contenedor del mapa Leaflet -->
   <div id="mapId"></div>
 
+  <!-- Botón flotante para localizar usuario (Abajo derecha) -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="light" (click)="locateUser()">
       <ion-icon name="navigate" color="primary"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
+  <!-- Botón flotante para limpiar rutas (Arriba derecha) -->
   <ion-fab slot="fixed" vertical="top" horizontal="end" style="margin-top: 50px;">
      <ion-fab-button color="light" (click)="clearRoutes()">
         <ion-icon name="trash" color="danger"></ion-icon>
      </ion-fab-button>
   </ion-fab>
 
+  <!-- Modal para agregar nuevo evento -->
   <ion-modal [isOpen]="isModalOpen" (didDismiss)="cancelAdd()">
     <ng-template>
       <ion-header>
@@ -30,11 +34,49 @@
 
         <form (ngSubmit)="saveEvent()">
 
+          <!-- SECCIÓN DE FOTO -->
+          <div class="ion-text-center ion-margin-bottom" (click)="takePicture()" 
+               style="border: 2px dashed #333; border-radius: 10px; padding: 20px; background: #1e1e1e; cursor: pointer;">
+            
+            <!-- Estado sin foto -->
+            <div *ngIf="!newEvent.image">
+               <ion-icon name="camera" style="font-size: 40px; color: var(--ion-color-secondary);"></ion-icon>
+               <p style="margin: 5px 0; color: #888;">Toca para agregar foto</p>
+            </div>
+
+            <!-- Estado con foto -->
+            <div *ngIf="newEvent.image">
+               <img [src]="newEvent.image" style="max-height: 150px; border-radius: 8px; border: 1px solid var(--ion-color-secondary);">
+               <p style="margin: 5px 0; color: var(--ion-color-secondary); font-size: 0.8em;">Cambiar foto</p>
+            </div>
+          </div>
+
+          <!-- Título -->
           <ion-item class="custom-input">
             <ion-label position="stacked">Título del Evento</ion-label>
             <ion-input [(ngModel)]="newEvent.title" name="title" placeholder="Ej. Toquín en la Sexta" required></ion-input>
           </ion-item>
 
+          <!-- SELECTOR DE FECHA (NUEVO) -->
+          <ion-item class="custom-input">
+            <ion-label position="stacked">Fecha del Evento</ion-label>
+            <!-- Botón que despliega el calendario -->
+            <ion-datetime-button datetime="datetime" style="margin-top: 10px; margin-bottom: 10px;"></ion-datetime-button>
+            
+            <!-- Modal flotante con el calendario -->
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime 
+                  id="datetime" 
+                  presentation="date" 
+                  [(ngModel)]="newEvent.date" 
+                  name="date"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+
+          <!-- Tipo de Lugar -->
           <ion-item class="custom-input">
             <ion-label position="stacked">Tipo de Lugar</ion-label>
             <ion-select [(ngModel)]="newEvent.locationType" name="locationType" placeholder="Selecciona">
@@ -46,31 +88,37 @@
             </ion-select>
           </ion-item>
 
+          <!-- Dirección -->
           <ion-item class="custom-input">
             <ion-label position="stacked">Dirección</ion-label>
             <ion-input [(ngModel)]="newEvent.address" name="address" placeholder="Calle..."></ion-input>
           </ion-item>
 
+          <!-- Descripción -->
           <ion-item class="custom-input">
             <ion-label position="stacked">Descripción</ion-label>
             <ion-textarea [(ngModel)]="newEvent.description" name="description" rows="3" placeholder="¿Qué bandas tocan? ¿Costo?"></ion-textarea>
           </ion-item>
 
+          <!-- Etiquetas -->
           <ion-item class="custom-input">
             <ion-label position="stacked">Etiquetas (Género, Vibe)</ion-label>
             <ion-input [(ngModel)]="newEvent.tags" name="tags" placeholder="Ej. Rock, Ska, Norteño, Chill"></ion-input>
           </ion-item>
 
+          <!-- Info Extra -->
           <ion-item class="custom-input">
             <ion-label position="stacked">Info Extra (Precios, Edad)</ion-label>
             <ion-input [(ngModel)]="newEvent.extraInfo" name="extraInfo" placeholder="Ej. +18, Cover $50"></ion-input>
           </ion-item>
 
+          <!-- Checkbox Accesibilidad -->
           <ion-item lines="none" class="custom-checkbox">
             <ion-checkbox slot="start" [(ngModel)]="newEvent.hasAccessibility" name="hasAccessibility"></ion-checkbox>
-            <ion-label>¿Cuenta con acceso para discapacitados?</ion-label>
+            <ion-label>¿Cuenta con acceso para personas con discapacidades?</ion-label>
           </ion-item>
 
+          <!-- Botón Publicar -->
           <div class="ion-padding-top">
             <ion-button expand="block" type="submit" color="secondary" shape="round" [disabled]="!newEvent.title">
               <ion-icon slot="start" name="add"></ion-icon>

@@ -5,51 +5,34 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { addIcons } from 'ionicons';
 import {
-  settingsOutline,
-  mapOutline,
-  flashOutline,
-  personOutline,
-  logOutOutline,
-  personCircleOutline,
-  eyeOutline,
-  camera,
-  heart,
-  heartOutline,
-  calendarOutline
+  settingsOutline, mapOutline, flashOutline, personOutline,
+  logOutOutline, personCircleOutline, eyeOutline, camera,
+  heart, heartOutline, calendarOutline, locationOutline,
+  closeCircleOutline // Icono para cerrar la vista previa
 } from 'ionicons/icons';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Database } from '../../services/database';
 import { ThemeService } from 'src/app/services/theme';
+import { MusicEvent } from 'src/app/interface/event'; // Importamos la interfaz
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-  
-  ]
+  imports: [IonicModule, CommonModule, FormsModule, RouterLink]
 })
 export class ProfilePage implements OnInit {
 
   user = this.database.currentUser;
-  
   profileImage = 'assets/icon/Vectoor.png';
-
   eventsAttended = 15;
   artistsFollowed = 5;
   currentMode = 'normal';
+  activeTab: 'favorites' | 'calendar' = 'favorites';
 
-  savedEvents = [
-    { title: 'Rock Festival', subtitle: 'Indie Bar • Hoy, 20:00h', tags: ['#Rock', '#Indie'], image: 'assets/icon/banda1.jpg' },
-    { title: 'Strangers', subtitle: 'Hita Bar • Sab, 21:30h', tags: ['#Electrónica'], image: 'assets/icon/banda3.jpg' },
-    { title: 'Latin Beats', subtitle: 'Hazy District • Vie, 22:00h', tags: ['#Latin', '#Reggaeton'], image: 'assets/icon/banda4.jpg' }
-  ];
-
-  activeTab: 'saved' | 'favorites' | 'calendar' = 'saved';
+  // Variable para la vista previa del evento en el calendario
+  selectedEventPreview: MusicEvent | null = null;
 
   constructor(
     public database: Database,
@@ -58,27 +41,63 @@ export class ProfilePage implements OnInit {
     private themeService: ThemeService
   ) {
     addIcons({
-      settingsOutline,
-      mapOutline,
-      flashOutline,
-      personOutline,
-      logOutOutline,
-      personCircleOutline,
-      eyeOutline,
-      camera,
-      heart,
-      heartOutline,
-      calendarOutline
+      settingsOutline, mapOutline, flashOutline, personOutline,
+      logOutOutline, personCircleOutline, eyeOutline, camera,
+      heart, heartOutline, calendarOutline, locationOutline,
+      closeCircleOutline
     });
-
+    
     this.currentMode = localStorage.getItem('color-mode') || 'normal';
   }
 
   ngOnInit() {
+    if (!this.user()) {
+        console.log('Sesión no encontrada, redirigiendo...');
+        this.router.navigate(['/login']);
+    }
+  }
+
+  get favoriteEvents() {
+    return this.database.events().filter(event => event.isFavorite);
+  }
+
+  get calendarEvents() {
+    return this.database.events()
+      .filter(event => event.date && event.date !== '') 
+      .sort((a, b) => (a.date! > b.date!) ? 1 : -1);
+  }
+
+  get highlightedDates() {
+    return this.calendarEvents.map(event => ({
+      date: event.date!, 
+      textColor: '#ffffff',
+      backgroundColor: '#ff00ff'
+    }));
   }
 
   segmentChanged(ev: any) {
     this.activeTab = ev.detail.value;
+    // Limpiamos la vista previa al cambiar de pestaña
+    this.selectedEventPreview = null;
+  }
+
+  // --- NUEVA FUNCIÓN: Al seleccionar una fecha en el calendario ---
+  onDateSelected(event: any) {
+    // El evento devuelve la fecha en formato ISO (YYYY-MM-DD...)
+    const dateSelected = event.detail.value.split('T')[0];
+    
+    // Buscamos si hay un evento ese día
+    const foundEvent = this.calendarEvents.find(e => e.date === dateSelected);
+    
+    if (foundEvent) {
+      this.selectedEventPreview = foundEvent;
+    } else {
+      this.selectedEventPreview = null;
+    }
+  }
+
+  closePreview() {
+    this.selectedEventPreview = null;
   }
 
   async changeImage() {
@@ -86,15 +105,15 @@ export class ProfilePage implements OnInit {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.Uri,
+        resultType: CameraResultType.DataUrl, 
         source: CameraSource.Prompt
       });
 
-      if (image.webPath) {
-        this.profileImage = image.webPath;
+      if (image.dataUrl) {
+        this.profileImage = image.dataUrl;
       }
     } catch (error) {
-      console.log(error);
+      console.log('Usuario canceló o error en cámara', error);
     }
   }
 
@@ -112,17 +131,9 @@ export class ProfilePage implements OnInit {
           text: 'Cerrar Sesión',
           role: 'destructive',
           icon: 'log-out-outline',
-          handler: () => {
-            this.logout();
-          }
+          handler: () => { this.logout(); }
         },
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          icon: 'close',
-          handler: () => {
-          }
-        }
+        { text: 'Cancelar', role: 'cancel', icon: 'close', handler: () => { } }
       ]
     });
     await actionSheet.present();
